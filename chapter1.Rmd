@@ -1,4 +1,7 @@
 
 # About the project
 
-*Write a short description about the course and add a link to your GitHub repository here. This is an R Markdown (.Rmd) file so you can use R Markdown syntax.*
+I'm well. I expect to learn about using R for data science. I heard about this course from a friend.
+
+**Github repo:** [link](https://github.com/mjelbart/IODS-project/)
+**Course diary:** [link](https://mjelbart.github.io/IODS-project/)
