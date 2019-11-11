@@ -1,7 +1,65 @@
-# Insert chapter 2 title here
-
-*Describe the work you have done this week and summarize your learning.*
+# Chapter 2: Regression and model validation
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
 - Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+
+### Analysis: Section 1
+I started by checking my working directory
+```{r}
+getwd()
+```
+
+Read in the data which includes headers and uses comma as a separator
+```{r}
+students2014 <- read.table("C:/Users/OMISTAJA/Documents/IODS-project/data/learning2014.txt", header=TRUE, sep=",")
+```
+
+Explored the structure of the data to show that it has 166 obs. of  7 variables
+```{r}
+str(students2014)
+```
+
+Explored the structure of the data using dim(), showing that it has 166 rows and 7 columns
+```{r}
+dim(students2014)
+```
+
+**A Brief Description of the Dataset:** 
+This data set is from the international survey of Approaches to Learning.
+The central measure in this study were questions related to Deep, Surface and Strategic learning answered on a Likert scale. There were 8-12 questions for each category. Combination variables were created from these which were then scaled to the original scales by taking the mean.
+Data is also included for Age, attitute toward statistics, exam points, and gender.
+Excluded data: observations with exam points of zero were excluded. 
+
+
+### Analysis: Section 2
+A graphical overview of the data using ggplot2 and GGally to make an advanced plot matrix
+
+```{r}
+library(ggplot2)
+library(GGally)
+ggpairs(students2014, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+```
+
+A summary of the variables in the data
+```{r}
+summary(students2014)
+```
+
+An interpretation of the outputs: 
+- Describe and interpret the outputs, 
+- commenting on the distributions of the variables 
+- and the relationships between them.
+
+
+```{r}
+gender_comparison <- ggplot(students2014, aes(x = attitude, y = points, col = gender, labs(title="Student's attitude versus exam points")))
+gender_comparison + ggtitle("Student's attitude versus exam points") + geom_smooth(method = "lm")
+```
+
+
+### Analysis: Section 3
+
+### Analysis: Section 4
+
+### Analysis: Section 5
