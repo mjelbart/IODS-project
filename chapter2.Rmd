@@ -46,20 +46,49 @@ A summary of the variables in the data
 summary(students2014)
 ```
 
-An interpretation of the outputs: 
-- Describe and interpret the outputs, 
-- commenting on the distributions of the variables 
-- and the relationships between them.
-
+An interpretation of the outputs:
+* The majority of the students were female. 
+* The majority of the students were young.
+* Most of the variables are randomly distributed.
+* There was strong correlation between attitude and points for both genders.
 
 ```{r}
 gender_comparison <- ggplot(students2014, aes(x = attitude, y = points, col = gender, labs(title="Student's attitude versus exam points")))
 gender_comparison + ggtitle("Student's attitude versus exam points") + geom_smooth(method = "lm")
 ```
 
+### Analysis: Section 3 & 4
+Three explanatory variables (attitude, strategic learning, surface learning) fitted to a regression model with exam points as the target (dependent) variable:
 
-### Analysis: Section 3
+```{r}
+summary(lm(points ~ attitude + stra + surf, data = students2014))
+```
 
-### Analysis: Section 4
+Interpretation of the results: Attitude is the only statistically significant predictor of exam points with a t-test p value, Pr(>|t|), less than 0.001. The better people's attitude towards learning was the better they tended to do in the exam.
+
+The same model with the statistically insignificant explanatory variables removed:
+```{r}
+final_model <- lm(points ~ attitude, data = students2014)
+summary("final_model")
+```
+
+The Multiple R-squared of the model, 0.2074 (or 20%), shows how much the variance in the points is explained by the attitude. It shows that a good attitude is valuable but that it's far from being the only factor in play.
+
 
 ### Analysis: Section 5
+Diagnostic plots: Residuals vs Fitted values, Normal QQ-plot and Residuals vs Leverage. 
+```{r}
+par(mfrow = c(1,3))
+plot(final_model, which = c(1,2,5))
+```
+
+The assumptions of a linear regression model are: 
+* Errors have constant variance σ^2
+* Errors normally distributed 
+* Errors not correlated
+* The size of a given error does not depend on the explanatory variables 
+
+The variance of the errors are reasonable constant, this is shown by the values in the Residuals vs Fitted values plot being randomly scattered.
+The errors are normally distributed, this is shown by most of the values staying along the regression line in the QQ plot.
+No one value should have a leverage and while the Residuals vs Leverage plot shows outliers with higher leverage the x-axis is very short so the graphic makes it seem like a bigger problem than it is.
+
