@@ -91,13 +91,15 @@ model
 
 ```
 
-### Present and interpret a summary of the fitted model. 
+### Presentation and interpretation of a summary of the fitted model. 
 ```{r}
 summary(model)
 
 ```
 
-### Presentation and interpretation of the coefficients of the model as odds ratios and confidence intervals for them. 
+### Presentation and interpretation of the coefficients of the model as odds ratios and confidence intervals for them.
+SexM, Failures and Absences all have an odds ratio over 1. This indicates that each of them are positively associated with alcohol use. Students with high alcohol use were more often male than female, failed more those with low alcohol use, and were absent more often than student with low alcohol use.
+
 ```{r}
 oddsratios <- coef(model) %>% exp
 
@@ -106,6 +108,7 @@ confidenceintervals <- confint(model) %>% exp
 cbind(oddsratios, confidenceintervals)
 
 ```
+
 
 ### Interpret the results and compare them to your previously stated hypothesis. Hint: If your model includes factor variables see for example the first answer of this stackexchange thread <http://stats.stackexchange.com/questions/60817/significance-of-categorical-predictor-in-logistic-regression> on how R treats and how you should interpret these variables in the model output (or use some other resource to study this). (0-5 points)
 
