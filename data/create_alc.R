@@ -77,3 +77,5 @@ alc <- mutate(alc, high_use = alc_use > 2)
 # The joined data should now have 382 observations of 35 variables.
 
 glimpse(alc)
+write.csv(alc, file = "data/alc.csv")
+str(read.csv("data/alc.csv"))
