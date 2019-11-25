@@ -41,10 +41,15 @@ gii %>%
 # The first one should be the ratio of Female and Male populations with secondary education in each country. (i.e. edu2F / edu2M). 
 # The second new variable should be the ratio of labour force participation of females and males in each country (i.e. labF / labM).
 
-mutate(gii,)
+gii <- gii %>% mutate(FemtoMal_edu = seced.fem/seced.mal)
+gii <- gii %>% mutate(FemtoMal_work = lfpr.fem/lfpr.mal)
+
 
 # 6. Join together the two datasets using the variable Country as the identifier. 
 # Keep only the countries in both data sets (Hint: inner join). 
 # The joined data should have 195 observations and 19 variables. 
 # Call the new joined data "human" and save it in your data folder.
 
+human <- inner_join(hd,gii,by="country")
+dim(human) 
+write.csv(human, file="data/human.csv", row.names = FALSE)
