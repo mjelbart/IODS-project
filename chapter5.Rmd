@@ -1,0 +1,30 @@
+# Chapter 5: Dimensionality reduction techniques
+
+# Data Wrangling
+
+Dataset Description: 
+
+195 Observations, 19 Variables
+
+"The 'human' dataset originates from the United Nations Development Programme." http://hdr.undp.org/en/content/human-development-index-hdi
+
+Meta data file for the modified data - https://raw.githubusercontent.com/TuomoNieminen/Helsinki-Open-Data-Science/master/datasets/human_meta.txt
+
+```{r}
+human <- read.csv("data/human.csv", sep = ",")
+dim(human)
+str(human)
+```
+
+1. Transforming the Gross National Income (GNI) variable to numeric
+
+```{r}
+library (tidryr)
+library(stringr)
+
+# look at the structure of the GNI column in 'human'
+str(human$GNI)
+
+# remove the commas from GNI and print out a numeric version of it
+#str_replace(human$GNI, pattern=",", replace ="") %>% as.numeric
+```

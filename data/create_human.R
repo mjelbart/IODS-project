@@ -54,3 +54,21 @@ human <- inner_join(hd,gii1,by="Country")
 dim(human) 
 write.csv(human, file="data/human.csv", row.names = FALSE)
 summary(read.csv("data/human.csv", sep = ","))
+
+# Week 5 data wrangling
+str(human$GNI)
+
+human <- mutate(human, GNI = as.numeric(human$GNI))
+
+class(human$GNI)
+human$GNI
+
+# 5.2 
+# defining columns to keep
+keep <- c("Country", "Edu2.FM", "Labo.FM", "Life.Exp", "Edu.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F")
+
+# 5.3 Rmove all rows with missing values
+
+# 5.4 Remvoe  the observations which relate to regions instead of coutnreies
+
+# 5. Define the row names of the data by the country names and remove the country name column from the data. The data should now have 155 observations and 8 variables. Save the human data in your data folder including the row names. You can overwrite your old ‘human’ data. (
