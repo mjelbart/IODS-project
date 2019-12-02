@@ -119,6 +119,6 @@ human_2 <- dplyr::select(human_, -Country)
 
 # The data should now have 155 observations and 8 variables. 
 str(human_2)
-# Save the human data in your data folder including the row names. 
-# You can overwrite your old ‘human’ data. (
+# Save the human data 
+write.csv(human_2, file="data/human_2.csv", row.names = TRUE)
 
