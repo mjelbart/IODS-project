@@ -3,9 +3,10 @@
 hd <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human_development.csv", stringsAsFactors = F)
 gii <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/gender_inequality.csv", stringsAsFactors = F, na.strings = "..")
 
-human2 <- read.csv("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt")
-write.csv(human2,file="data/human2.txt")
-summary(read.csv("data/human3.txt"))
+if (!require("devtools")) install.packages("devtools")
+library(devtools)
+install_github("husson/FactoMineR")
+install.packages(FactoMineR)
 
 # 3. Explore the datasets: see the structure and dimensions of the data. Create summaries of the variables.
 

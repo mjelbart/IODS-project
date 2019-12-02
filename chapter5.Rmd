@@ -1,41 +1,162 @@
 # Chapter 5: Dimensionality reduction techniques
 
 # Data Wrangling
+I did the Data Wrangling for week 5 in the file data/create_human.R part way down the file with a comment saying '# Week 5 data wrangling'
 
 Dataset Description: 
-
-195 Observations, 19 Variables
-
-"The 'human' dataset originates from the United Nations Development Programme." http://hdr.undp.org/en/content/human-development-index-hdi
-
-Meta data file for the modified data - https://raw.githubusercontent.com/TuomoNieminen/Helsinki-Open-Data-Science/master/datasets/human_meta.txt
+"The 'human' dataset originates from the United Nations Development Programme." -  http://hdr.undp.org/en/content/human-development-index-hdi - and includes 195 Observations of 19 Variables. See the Meta data file for the modified data at - https://raw.githubusercontent.com/TuomoNieminen/Helsinki-Open-Data-Science/master/datasets/human_meta.txt
 
 ```{r}
-human <- read.csv("data/human.csv", sep = ",")
+human <- read.csv("data/human3.txt", sep = ",")
 dim(human)
 str(human)
 ```
 
-1. Transforming the Gross National Income (GNI) variable to numeric
+
+## 1. Description and interpretation of the data
+The dataset combines several indicators (as variables) from most countries in the world. The variables are:
+
+"Edu2.FM" = Proportion of females with at least secondary education / Proportion of males with at least secondary education
+
+"Labo.FM" = Proportion of females in the labour force / Proportion of males in the labour force
+
+"Edu.Exp" = Expected years of schooling 
+
+"Life.Exp" = Life expectancy at birth
+
+"GNI" = Gross National Income per capita
+
+"Mat.Mor" = Maternal mortality ratio
+
+"Ado.Birth" = Adolescent birth rate
+
+"Parli.F" = Percetange of female representatives in parliament
+
+
+### Summaries and a graphical overview of the data 
+From the plot below we can see a number of correlations:
+
+Countries with higher life expectancy have higher GNI, more expected years of schooling, higher rates of females with secondary education, less births to adolescent parents and less mothers dying in childbirth.
+
+Mat.Mor and Ado.Birth positively correlated with each other and negatively correlated with Edu2.FM, Labo.FM, Edu.Exp, Life.Exp, GNI.
+
+Notably from the distributions and variable summaries, the Female to Male secondary education ratio peaks close to 0.9. the majority of countries have a low GNI and low maternal mortality rate.
+
 
 ```{r}
-library (tidryr)
-library(stringr)
+library(ggplot2)
+library(GGally)
 
-# look at the structure of the GNI column in 'human'
-str(human$GNI)
+summary(human)
 
-# remove the commas from GNI and print out a numeric version of it
-#str_replace(human$GNI, pattern=",", replace ="") %>% as.numeric
+ggpairs(human)
 ```
 
-Show a graphical overview of the data and show summaries of the variables in the data. Describe and interpret the outputs, commenting on the distributions of the variables and the relationships between them. (0-3 points)
 
-Perform principal component analysis (PCA) on the not standardized human data. Show the variability captured by the principal components. Draw a biplot displaying the observations by the first two principal components (PC1 coordinate in x-axis, PC2 coordinate in y-axis), along with arrows representing the original variables. (0-2 points)
 
-Standardize the variables in the human data and repeat the above analysis. Interpret the results of both analysis (with and without standardizing). Are the results different? Why or why not? Include captions (brief descriptions) in your plots where you describe the results by using not just your variable names, but the actual phenomenons they relate to. (0-4 points)
 
+
+## 2. PCA 
+Below we perform Principal component Analysis (PCA) on the non-standardized human data followed by a biplot displaying the observations by the first two principal components (PC1 coordinate in x-axis, PC2 coordinate in y-axis), along with arrows representing the original variables. 
+
+What we're looking for with PCA is to reveal a small number of principal components that provide a reasonable characterization of the complete dataset. In the PCA below PC1 captures the maximum amount of variance from the features in the original data with a standard deviation of 1.85e+04 and PC2 captures the maximum amount of variability left with a standard deviation of 1.85e+02. Each of the principal components are less important than the one before in terms of captured variance.
+
+In this case we can see from the Proportion of Variance that 99.9% of the variance is captured by PC1.
+
+```{r}
+# Principal Component Analysis with the Singular Value Decomposition method
+pca_human <- prcomp(human)
+summary(pca_human)
+
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+```
+
+
+## 3. PCA with Standardized variables
+Below we repeat the above analysis but after standardizing the variables in the human data.
+
+The results are quite different to the PCA with non-standardized variables. The GNI in the non-standardized dataset has values ranging from over one hundred thousand down to five hundred whereas the next largest range in another variable is much lower, from 0.6 to 204.8. This makes variance in any other variable seem inconsequential. PCA is sensitive to the scaling of the features and assumes that features with larger variance are more important than features with smaller variance.
+
+ - - - - - - -  - - Include captions (brief descriptions) in your plots where you describe the results by using not just your variable names, but the actual phenomenons they relate to. (0-4 points)
+
+In this new analysis PC1 captures 53.6% of the variance and PC2 captures 16.2% which is 69.8% combined, much less than for the PCA in section 2.
+
+The small angle between several of the arrows indicates high positive correlation between their features. Mat.Mor with Ado.Birth; Parli.F with Labo.FM; and between Edu.Exp, Life.Exp, GNI and Edu2.FM
+
+
+```{r}
+# standardizing the variables
+human_std <- scale(human)
+
+# Principal Component Analysis with the Singular Value Decomposition method and a summary
+pca_human <- prcomp(human_std)
+s <- summary(pca_human)
+s
+
+# Draw a biplot displaying the observations by the first two principal components (PC1 coordinate in x-axis, PC2 coordinate in y-axis), along with arrows representing the original variables.
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+
+```
+
+## 4. Interpretations
 Give your personal interpretations of the first two principal component dimensions based on the biplot drawn after PCA on the standardized human data. (0-2 points)
 
-Load the tea dataset from the package Factominer. Explore the data briefly: look at the structure and the dimensions of the data and visualize it. Then do Multiple Correspondence Analysis on the tea data (or to a certain columns of the data, it’s up to you). Interpret the results of the MCA and draw at least the variable biplot of the analysis. You can also explore other plotting options for MCA. Comment on the output of the plots. (0-4 points)
+PC1 is highly positively correlated with Mat.Mor and Ado.Birth, shown in the biplot by the small angle between the arrows of those two features and the X-axis.
+
+
+
+## 5. MCA on tea data
+
+### 5a. The tea dataset
+Load the tea dataset from the package Factominer. Explore the data briefly: look at the structure and the dimensions of the data and visualize it. 
+```{r}
+# loading FactoMineR and the tea dataset
+library(FactoMineR)
+data(tea)
+
+# Exploring the data
+dim(tea)
+str(tea)
+
+# Visualising the data
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+# ggplot2, dplyr and tidyr are available ***********************************
+ 
+# column names to keep in the dataset
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+ 
+# select the 'keep_columns' to create a new dataset
+tea_time <- select(tea, one_of(keep_columns))
+ 
+# look at the summaries and structure of the data
+summary(tea_time)
+str(tea_time)
+ 
+# visualize the dataset. Define the plot type by adding geom_bar() after initialization of the ggplot. (Ignore the warning.). Turn the lables 45 degrees using theme. Use + to add functions to ggplot()
+gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8)) 
+
+
+```
+
+### 5b. MCA
+Then do Multiple Correspondence Analysis on the tea data (or to certain columns of the data, it’s up to you). Interpret the results of the MCA and draw at least the variable biplot of the analysis. You can also explore other plotting options for MCA. Comment on the output of the plots.
+
+```{r}
+# multiple correspondence analysis. MCA() function visualizes the analysis by default, and the plots can be turned off with the argument graph = FALSE.
+mca <- MCA(tea_time, graph = FALSE)
+ 
+# summary of the model
+summary(mca)
+ 
+# visualize MCA. You can either plot the variables or the individuals or both. You can change which one to plot with the invisible argument. Adding habillage = "quali" changes the colour of the labels within the plot from red to multicoloured.
+plot(mca, invisible=c("ind"), habillage = "quali")
+
+```
+
+"Multiple Correspondence Analysis (MCA) is a method to analyze qualitative data... and can be used to detect patterns or structure in the data as well as in dimension reduction."
+
+Categorical variables
+"the value is close to one, it indicates a strong link with the variable and dimension"
 
