@@ -1,0 +1,36 @@
+# Chapter 6: Analysis of longitudinal data
+
+Note: As you read the data sets in your chapter6.Rmd you may have to factor the categorical variables again, as R may not recognise them automatically as factors.
+
+Note that you must SWAP the data sets! :) It is NOT a simple copy & paste of my book!
+
+## 1. Analyses of Chapter 8 of MABS using the RATS data
+### Graphs or analysis results 
+### Interpretations
+
+```{r}
+rats <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/rats.txt", sep = " ")
+
+names(rats)
+
+# Look at the structure of rats
+str(rats)
+
+# Print out summaries of the variables
+summary(rats)
+```
+
+
+## 2. Analyses of Chapter 9 of MABS using the BPRS data. 
+### Graphs or analysis results
+### Interpretations
+
+```{r}
+bprs <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/BPRS.txt", sep = " ")
+
+names(bprs)
+```
+
+
+```{r, fig.width=10, fig.height=10, warning=FALSE}
+```
