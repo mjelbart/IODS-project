@@ -2,18 +2,18 @@
 
 # 1. Load the dataset
 
-bprs <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/BPRS.txt", sep = " ")
+BPRS <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/BPRS.txt", sep = " ")
 
-rats <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/rats.txt", sep = " ")
+RATS <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/rats.txt", sep = "\t")
 
-str(bprs)
-str(rats)
+str(BPRS)
+str(RATS)
 
 # write the datasets to my data folder
 
-write.csv(bprs, file="data/bprs.csv", row.names = TRUE)
+write.csv(BPRS, file="data/bprs.csv", row.names = TRUE)
 
-write.csv(rats, file="data/rats", row.names = TRUE)
+write.csv(RATS, file="data/rats", row.names = TRUE)
 
 
 
@@ -32,12 +32,15 @@ BPRSL <-  BPRS %>% gather(key = weeks, value = bprs, -treatment, -subject)
 # Extract the week number
 BPRSL <-  BPRSL %>% mutate(week = as.integer(substr(weeks, 5,5)))
 
+glimpse(BPRS)
+
 
 # Convert to long form
-RATSL <-  RATS %>% gather(key = THE TITEL IS like WD11, value = rats, -treatment, -subject)
+RATSL <-  RATS %>% gather(key = WD, value = rats, -ID, -Group)
+RATSL
 
 # Extract the week number
-RATSL <-  RATSL %>% mutate(week = as.integer(substr(THE TITEL IS like WD11, 3,4)))
+RATSL <-  RATSL %>% mutate(week = as.integer(substr(WD, 3,4)))
 
 
 
@@ -46,8 +49,20 @@ RATSL <-  RATSL %>% mutate(week = as.integer(substr(THE TITEL IS like WD11, 3,4)
 # view the data contents and structures, and 
 # create some brief summaries of the variables. 
 
+glimpse(BPRS)
+glimpse(BPRSL)
+glimpse(RATS)
+glimpse(RATSL)
+
+str(BPRS)
+str(BPRSL)
+str(RATS)
+str(RATSL)
+
+summary(BPRS)
+summary(BPRSL)
+summary(RATS)
+summary(RATSL)
+
 # Make sure that you understand the point of the long form data 
 # and the crucial difference between the wide and the long forms before proceeding the to Analysis exercise. (2 points)
-
-# Take a glimpse at the BPRSL data
-glimpse(BPRSL)
