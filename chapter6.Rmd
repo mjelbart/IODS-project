@@ -9,17 +9,29 @@ Note that you must SWAP the data sets! :) It is NOT a simple copy & paste of my 
 ### Interpretations
 
 ```{r}
-rats <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/rats.txt", sep = " ")
+RATSL <- read.csv("data/RATSL.csv", sep = ",")
 
-names(rats)
+names(RATSL)
 
 # Look at the structure of rats
-str(rats)
+str(RATSL)
 
 # Print out summaries of the variables
-summary(rats)
+summary(RATSL)
 ```
 
+```{r}
+library(dplyr, tidyr, ggplot2)
+
+# Draw the plot. Inspect the plot. See how both the BPRS-score and the variability between individuals decrease over the eight weeks time
+ggplot(RATSL, aes(x = week, y = rats, linetype = Group)) +
+  geom_line() +
+  scale_linetype_manual(values = rep(1:10, times=4)) +
+  facet_grid(. ~ Group, labeller = label_both) +
+  theme(legend.position = "none") + 
+  scale_y_continuous(limits = c(min(RATSL$rats), max(RATSL$rats)))
+
+```
 
 ## 2. Analyses of Chapter 9 of MABS using the BPRS data. 
 ### Graphs or analysis results

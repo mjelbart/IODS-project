@@ -42,6 +42,9 @@ RATSL
 # Extract the week number
 RATSL <-  RATSL %>% mutate(week = as.integer(substr(WD, 3,4)))
 
+write.csv(BPRSL, file="data/BPRSL.csv", row.names = FALSE)
+write.csv(RATSL, file="data/RATSL.csv", row.names = FALSE)
+
 
 
 # 4. Now, take a serious look at the new data sets and compare them with their wide form versions:
