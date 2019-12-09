@@ -41,12 +41,9 @@ glimpse(BPRS)
 
 
 # Convert to long form and extract Time
-
-RATSL <-  RATS %>% gather(key = WD, value = rats, -ID, -Group)
-RATSL
-
-# Extract the week number
-RATSL <-  RATSL %>% mutate(week = as.integer(substr(WD, 3,4)))
+RATSL <- RATS %>%
+  gather(key = WD, value = Weight, -ID, -Group) %>% 
+  mutate(Time = as.integer(substr(WD, 3,4))) 
 
 write.csv(BPRSL, file="data/BPRSL.csv", row.names = FALSE)
 write.csv(RATSL, file="data/RATSL.csv", row.names = FALSE)
