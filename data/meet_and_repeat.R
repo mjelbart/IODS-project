@@ -1,5 +1,8 @@
 # Chapter 6
 
+library(tidyr)
+library(dplyr)
+
 # 1. Load the dataset
 
 BPRS <- read.csv("https://raw.githubusercontent.com/KimmoVehkalahti/MABS/master/Examples/data/BPRS.txt", sep = " ")
@@ -23,6 +26,8 @@ write.csv(RATS, file="data/rats", row.names = TRUE)
 BPRS$treatment <- factor(BPRS$treatment)
 BPRS$subject <- factor(BPRS$subject)
 
+RATS$Group <- factor(RATS$Group)
+RATS$ID <- factor(RATS$ID)
 
 
 # 3. Convert the data sets to long form. Add a week variable to BPRS and a Time variable to RATS. (1 point)
@@ -35,7 +40,8 @@ BPRSL <-  BPRSL %>% mutate(week = as.integer(substr(weeks, 5,5)))
 glimpse(BPRS)
 
 
-# Convert to long form
+# Convert to long form and extract Time
+
 RATSL <-  RATS %>% gather(key = WD, value = rats, -ID, -Group)
 RATSL
 
